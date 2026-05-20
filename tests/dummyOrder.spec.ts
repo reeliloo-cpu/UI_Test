@@ -1,10 +1,5 @@
 import { test, expect, Locator, PlaywrightTestArgs, PlaywrightTestOptions } from "@playwright/test";
 
-// scenarios to implement
-
-
-// 5 - button disabled with fields
-
 test.beforeEach(async ({ page }: PlaywrightTestArgs & PlaywrightTestOptions): Promise<void> => {
     const path = require('path');
     const filepath = `file://${path.resolve('html/dummy-order.html')}`;
