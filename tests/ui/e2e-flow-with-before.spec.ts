@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/login-page'
-import { faker } from '@faker-js/faker/locale/ar'
+import { faker } from '@faker-js/faker/locale/en'
 import { PASSWORD, USERNAME } from '../../config/env-data'
 
 let loginPage: LoginPage
@@ -17,15 +17,22 @@ test('signIn button disabled when incorrect data inserted', async ({}) => {
 })
 
 test('error message displayed when incorrect credentials used', async ({}) => {
-  // implement test
+  await loginPage.usernameField.fill('wrongUserName')
+  await loginPage.passwordField.fill('wrongUserPassword')
+  await loginPage.signInButton.click()
+  await expect(loginPage.incorrectCredentials).toBeVisible()
 })
 
 test('login with correct credentials and verify order creation page', async ({}) => {
   const orderCreationPage = await loginPage.signIn(USERNAME, PASSWORD)
   await expect(orderCreationPage.statusButton).toBeVisible()
-  // verify at least few elements on the order creation page
+  await expect(orderCreationPage.createOrderButton).toBeVisible()
 })
 
 test('login and create order', async ({}) => {
-  // implement test
+  const orderCreationPage = await loginPage.signIn(USERNAME, PASSWORD)
+  await orderCreationPage.customerName.fill(faker.lorem.word(2))
+  await orderCreationPage.customerPhone.fill('55555567')
+  await orderCreationPage.createOrderButton.click()
+  await expect(orderCreationPage.orderCreatedButton).toBeVisible()
 })
